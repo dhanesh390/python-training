@@ -36,15 +36,15 @@ for i in value:
     input_list.remove(i)
 
 
-value = input()
-input_list = list(value)
-count = 0
-for i in value:
-    new_set = set(input_list[input_list.index(i): input_list.index(i)+14])
-    count += 1
-    if len(new_set) == 14:
-        print(count+13)
-        break
-    new_set.clear()
-    input_list.remove(i)
+# value = input()
+# input_list = list(value)
+# count = 0
+# for i in value:
+#     new_set = set(input_list[input_list.index(i): input_list.index(i)+14])
+#     count += 1
+#     if len(new_set) == 14:
+#         print(count+13)
+#         break
+#     new_set.clear()
+#     input_list.remove(i)
 

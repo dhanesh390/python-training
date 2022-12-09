@@ -27,7 +27,7 @@ class Employee:
         self.__experience = None
         self.__age = None
         self.__first_name = first_name
-        self.last_name = last_name
+        self.__last_name = last_name
         self.employee_id = employee_id
         self.role = role
 
@@ -69,10 +69,10 @@ class Employee:
     #     return self.salary
 
     def __repr__(self):
-        return f'Welcome {self.first_name} {self.last_name} to {self.company_name}'
+        return f'Welcome {self.__first_name} {self.__last_name} to {self.company_name}'
 
     def __str__(self):
-        return f'Hi {self.first_name} {self.last_name}'
+        return f'Hi {self.__first_name} {self.__last_name}'
 
     @staticmethod
     @abstractmethod
@@ -118,13 +118,15 @@ class Trainer(Employee):
         print('employee object has been deleted')
 
 
-dhanesh = Trainee(first_name='Dhanesh', last_name='Kumar', employee_id='I2i01', role='Developer')
+dhanesh = Trainee(first_name='Danesh', last_name='Kumar', employee_id='I2i01', role='Developer')
 print(dhanesh)
 justin = Trainer(first_name='Justin', last_name='Raj', employee_id='I2i02', role='Lead architect')
 print(justin)
 # justin.set_salary(2000000)
 justin.set_projects_worked(20)
 print(justin.get_projects_worked())
+dhanesh.__first_name__ = 'Dhanesh'
+print(dhanesh)
 #
 #
 # list_of_employees = {}

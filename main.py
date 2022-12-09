@@ -1,4 +1,5 @@
 from others import config
+import re
 
 
 # This is a sample Python script.
@@ -10,9 +11,15 @@ from others import config
 def print_hi(name):
     # Use a breakpoint in the code line below to debug your script.
     print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-    print(config.first_variable)
-    print(config.second_variable)
-    print(dir(dict))
+    # print(config.first_variable)
+    # print(config.second_variable)
+    # print(dir(dict))
+    line = '$ cd /'
+    cmd = re.search(r'\$ (cd|ls) (.+)', line)
+    if cmd:
+        print('ok')
+    else:
+        print('No')
 
 
 
