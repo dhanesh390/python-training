@@ -28,6 +28,8 @@
 
 """
 
+# __________________________________________
+
 """ defaultDict in collections module"""
 
 # Need to import defaultDict from collections module
@@ -35,4 +37,19 @@
 """
  It acts similar to the counter, but the major difference is it takes unavailable key and doesn't throws an error
  instead it provides a default value as provided data type
+ 
+    # sample_list = defaultdict(str)
+    # sample_list['Dhanesh'] = 'Developer'
+    # sample_list['Deepak'] = 'Tester'
+    # 
+    # print('1: ', sample_list)
+    # 
+    # print(sample_list['Gowtham'])
+    # print('2: ', sample_list)
+    
+    It doesn't maintain a order 
 """
+
+#  _________________________________
+
+""" Need to import orderedDict from collection module"""

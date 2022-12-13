@@ -19,7 +19,7 @@
 #
 # fp = open(r'C:/Users/lenovo/Documents/Day1.txt', 'r')
 # print('print after overridden: ', fp.read())
-# # absolute path / Relative path need to check -> os path module
+# # absolute file_path / Relative file_path need to check -> os file_path module
 #
 # #  Seeking the required position
 #
