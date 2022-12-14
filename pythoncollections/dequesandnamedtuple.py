@@ -13,29 +13,38 @@ def add_movie_records():
     show = screening_record._make([movie_name, screen_no, duration])
     print('1: ', show)
     movie_screening_record.append(show)
-    return movie_screening_record
+    return
 
 
 def deque_operations():
-    print('Enter 1 to append left\nEnter 2 to add at back')
-    choice = int(input('Enter your choice: '))
-    match choice:
-        case 1:
-            movie_screening_record.appendleft(['mm', '2', '3'])
-        case 2:
-            movie_screening_record.append(['zz', '3', '4'])
+    is_continue = True
+    while is_continue:
+        print('Enter 1 to append left\nEnter 2 to add at back\nEnter 3 to exit')
+        choice = int(input('Enter your choice: '))
+        match choice:
+            case 1:
+                movie_screening_record.appendleft(['mm', '2', '3'])
+                print(movie_screening_record)
+            case 2:
+                movie_screening_record.append(['zz', '3', '4'])
+                print(movie_screening_record)
+            case 3:
+                is_continue = False
+            case _:
+                print('Invalid input')
 
 
 def _init_():
     is_continue = True
     while is_continue:
-        print('Enter 1 to add show details\nEnter 2 to display records\nEnter 3 to exit')
+        print('Enter 1 to add show details\nEnter 2 to display records\nEnter 3 to exit\nEnter 4 to check deque '
+              'operations')
         user_choice = int(input('Enter your choice: '))
         match user_choice:
             case 1:
                 add_movie_records()
             case 2:
-                print(movie_screening_record.pop().__dict__)
+                print(movie_screening_record)
             case 3:
                 is_continue = False
             case 4:

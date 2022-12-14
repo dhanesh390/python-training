@@ -102,3 +102,7 @@ def _init():
         match user_choice:
             case 1:
                 add()
+
+
+if __name__ == '__main__':
+    _init()
