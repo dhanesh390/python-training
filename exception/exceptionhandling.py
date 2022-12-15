@@ -17,6 +17,20 @@ class InvalidInput(Exception):
             return 'Invalid input'
 
 
+class InvalidKey(Exception):
+    def __init__(self, *args):
+        if args:
+            self.message = args[0]
+        else:
+            self.message = None
+
+    def __str__(self):
+        if self.message:
+            return f'{self.message}'
+        else:
+            return 'Invalid key'
+
+
 employee_dict = OrderedDict()
 
 
@@ -76,3 +90,12 @@ if __name__ == '__main__':
 #     except InputIsNegativeError:
 #         print("Input value shouldn't be negative")
 
+
+# if not isinstance(name, str):
+#     return 'Name should be a string'
+# else:
+#     value = re.fullmatch('[A-Za-z]{2,25}( [A-Za-z]{2,25})?', name)
+#     if value:
+#         self.name = value
+#     else:
+#         return 'Incorrect value for attribute name'

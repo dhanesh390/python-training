@@ -1,4 +1,5 @@
 from others import config
+from datetime import datetime
 import re
 
 
@@ -14,12 +15,14 @@ def print_hi(name):
     # print(config.first_variable)
     # print(config.second_variable)
     # print(dir(dict))
-    line = '$ cd /'
-    cmd = re.search(r'\$ (cd|ls) (.+)', line)
-    if cmd:
-        print('ok')
-    else:
-        print('No')
+    current_date = datetime.utcnow().strftime('%Y-%m-%d')
+    print(current_date)
+    # line = '$ cd /'
+    # cmd = re.search(r'\$ (cd|ls) (.+)', line)
+    # if cmd:
+    #     print('ok')
+    # else:
+    #     print('No')
 
 
 
