@@ -1,15 +1,17 @@
 import csv
 import os
-from datetime import datetime
+from datetime import date
 
 file_path = os.getcwd()
 headers = ["Timestamp", "Application Name", "Description", "Status", "Code", ""]
+
+today: str = str(date.today())
 
 
 class Failed:
     failed_dict = {}
 
-    def __init__(self, timestamp='01-01-2022', application_name='app_name',
+    def __init__(self, timestamp=today, application_name='app_name',
                  description='description', status='Failed', code='code'):
         self.timestamp = timestamp
         self.application_name = application_name
@@ -23,7 +25,7 @@ class Failed:
                 if 'Failed' in i:
                     print(i)
 
-    def set_log_data(self, timestamp='01-01-2022', application_name='app_name',
+    def set_log_data(self, timestamp= today, application_name='app_name',
                      description='description', status='Failed', code='code'):
         failed_values = []
         self.failed_dict[headers[0]] = timestamp
@@ -38,7 +40,7 @@ class Failed:
 class Success:
     success_dict = {}
 
-    def __init__(self, timestamp='01-01-2022', application_name='app_name',
+    def __init__(self, timestamp= today, application_name='app_name',
                  description='description', status='Success'):
         self.timestamp = timestamp
         self.application_name = application_name
@@ -51,7 +53,7 @@ class Success:
                 if 'Success' in i:
                     print(i)
 
-    def set_log_data(self, timestamp='01-01-2022', application_name='app_name',
+    def set_log_data(self, timestamp= today, application_name='app_name',
                      description='description', status='Success'):
         success_values = []
         self.success_dict[headers[0]] = timestamp
@@ -65,7 +67,7 @@ class Success:
 class Warning:
     warning_dict = {}
 
-    def __init__(self, timestamp='01-01-2022', application_name='app_name',
+    def __init__(self, timestamp= today, application_name='app_name',
                  description='description', status='Warning'):
         self.timestamp = timestamp
         self.application_name = application_name
@@ -78,7 +80,7 @@ class Warning:
                 if 'Warning' in i and 'Failed' not in i:
                     print(i)
 
-    def set_log_data(self, timestamp='01-01-2000', application_name='app_name',
+    def set_log_data(self, timestamp= today, application_name='app_name',
                      description='description', status='Warning'):
         warning_values = []
         self.warning_dict[headers[0]] = timestamp
@@ -92,7 +94,7 @@ class Warning:
 class Session:
     session_dict = {}
 
-    def __init__(self, timestamp='01-01-2000', application_name='app_name',
+    def __init__(self, timestamp= today, application_name='app_name',
                  description='description', status='Session'):
         self.timestamp = timestamp
         self.application_name = application_name
@@ -105,7 +107,7 @@ class Session:
                 if 'Session' in i:
                     print(i)
 
-    def set_log_data(self, timestamp='01-01-2022', application_name='app_name',
+    def set_log_data(self, timestamp= today, application_name='app_name',
                      description='description', status='Session'):
         session_values = []
         self.session_dict[headers[0]] = timestamp

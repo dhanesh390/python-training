@@ -1,4 +1,6 @@
 from collections import OrderedDict
+
+
 # print(len(dir(locals()['__builtins__'])))
 # print(dir(locals()['__builtins__']))
 
@@ -29,6 +31,20 @@ class InvalidKey(Exception):
             return f'{self.message}'
         else:
             return 'Invalid key'
+
+
+class AccountNotFoundException(Exception):
+    def __init__(self, *args):
+        if args:
+            self.message = args[0]
+        else:
+            self.message = None
+
+    def __str__(self):
+        if self.message:
+            return f'{self.message}'
+        else:
+            return 'No account found'
 
 
 employee_dict = OrderedDict()
@@ -70,7 +86,6 @@ def _init_():
 
 if __name__ == '__main__':
     _init_()
-
 
 # class CustomError(Exception):
 #     """Base class exception for all the exceptions of this module"""

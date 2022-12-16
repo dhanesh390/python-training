@@ -2,6 +2,25 @@ import re
 from exception import exceptionhandling
 from collections import defaultdict
 from datetime import datetime, date
+import os
+
+# account_records = defaultdict(Account)
+#
+# account_records = {}
+
+
+# def generate_account_id():
+#     """ It returns a generated id for each account whenever required"""
+#     is_continue = True
+#     count = 0
+#     while is_continue:
+#         account_id = 'i2i' + str(count)
+#         yield account_id
+#         count += 1
+#
+#
+# ids = generate_account_id()
+file_path = os.getcwd()
 
 
 class Account:
@@ -32,7 +51,7 @@ class Account:
 
     def deposit_amount(self, amount: float):
         """ Setter method to deposit amount in the respective account"""
-        if 0 < amount < 100000:
+        if 0 < amount < 1000000:
             self.account_balance = amount
         else:
             raise exceptionhandling.InvalidInput('Depositing amount should be less than 100000')
@@ -56,16 +75,8 @@ class Account:
         """ Return the age attribute """
         return self.age
 
-    @staticmethod
-    def get_account_details(account_id):
-        if account_id in account_records.keys():
-            result = account_records[account_id]
-            return result
-        else:
-            return 'No Account found for this id'
 
-
-# account_records = defaultdict(Account)
+account_records = defaultdict(Account)
 
 account_records = {}
 
@@ -85,17 +96,23 @@ ids = generate_account_id()
 
 def create_account():
     new_account = Account()
-    name = input('Enter your name: ')
-    if re.fullmatch('[A-Za-z]{2,25}( [A-Za-z]{2,25})?', name):
-        new_account.set_name(name)
-    else:
-        return 'Use only alphabetic characters'
-    contact_number = input('Enter your contact number: ')
-    if re.fullmatch('^(?:(?:\+|0{0,2})91(\s*[\-]\s*)?|[0]?)?[789]\d{9}$',
-                    contact_number):  # ^(?:(?:\+|0{0,2})91(\s*[\-]\s*)?|[0]?)?[789]\d{9}$
-        new_account.set_contact_number(contact_number)  # '^[6-9]\d{9}$'
-    else:
-        return 'Enter a valid phone number'
+    get_name = True
+    while get_name:
+        name = input('Enter your name: ')
+        if re.fullmatch('[A-Za-z]{2,25}( [A-Za-z]{2,25})?', name):
+            new_account.set_name(name)
+            get_name = False
+        else:
+            print('Use only alphabetic characters')
+    get_contact_number = True
+    while get_contact_number:
+        contact_number = input('Enter your contact number: ')
+        if re.fullmatch('^(?:(?:\+|0{0,2})91(\s*[\-]\s*)?|[0]?)?[789]\d{9}$',
+                        contact_number):  # ^(?:(?:\+|0{0,2})91(\s*[\-]\s*)?|[0]?)?[789]\d{9}$
+            new_account.set_contact_number(contact_number)  # '^[6-9]\d{9}$'
+            get_contact_number = False
+        else:
+            print('Enter a valid phone number')
 
     birth_date_str: str = input("Enter your birth date (dd/mm/yyyy): ")
     birth_date: datetime = datetime.strptime(birth_date_str, "%d/%m/%Y")
@@ -106,6 +123,9 @@ def create_account():
 
     account_id = next(ids)
     account_records[account_id] = new_account
+
+    # with open(file_path + '\employee_records.csv', 'r+') as employee_records:
+
     return f'Account successfully created'
 
 
@@ -116,6 +136,7 @@ def get_account_number():
 
 
 def check_account_isavailable(account_id):
+    """ Returns true if the account exist or else it returns false"""
     if account_id in account_records.keys():
         return True
     else:
@@ -139,32 +160,65 @@ def withdraw_amount():
     return account.__dict__
 
 
+def get_account_details(account_id):
+    if account_id in account_records.keys():
+        result = account_records[account_id]
+        return result
+    else:
+        return 'No Account found for this id'
+
+
+def deposit_amount():
+    account_id = get_account_number()
+    account = get_account_details(account_id=account_id)
+    if account is not None:
+        amount = float(input('Enter the amount your want to deposit: '))
+        account.deposit_amount(amount=account.get_account_balance() + amount)
+        account_records[account_id] = account
+        return f'rupees {amount} is successfully deposited into the account {account.name}'
+    else:
+        raise exceptionhandling.AccountNotFoundException(f'No account found for the {account_id}')
+    ...
+
+
 def _init_():
     is_continue = True
     while is_continue:
         print('Enter 1 to create new account\nEnter 2 to view accounts\nEnter 3 to get account details\nEnter 4 to '
-              'withdraw amount from your account')
+              'deposit amount into your account\nEnter 5 to withdraw amount from your account')
 
         user_choice = int(input('Enter your choice: '))
-        if not isinstance(user_choice, int):
-            raise exceptionhandling.InvalidInput('Provide valid number value')
+        # if not str(user_choice).isnumeric():
+        #     raise exceptionhandling.InvalidInput('Provide valid number value')
+        # if not isinstance(user_choice, int):
+        #     raise exceptionhandling.InvalidInput('Provide valid number value')
         match user_choice:
             case 1:
                 print(create_account())
             case 2:
                 print([{i: j.__dict__} for i, j in account_records.items()])
             case 3:
-                result = Account.get_account_details(get_account_number())
+                result = get_account_details(get_account_number())
                 print(result.__dict__)
             case 4:
+                print(deposit_amount())
+            case 5:
                 print(withdraw_amount())
             case _:
                 print('Invalid input')
 
 
 if __name__ == '__main__':
-    try:
-        _init_()
-    except Exception as ex:
-        print(f'Exception occured:  {ex} ')
-        _init_()
+    is_continue = True
+    while is_continue:
+        try:
+            _init_()
+            is_continue = False
+        except ValueError as ex:
+            print(f'Invalid value Exception occured:  {ex} ')
+        except exceptionhandling.InvalidInput as ex:
+            print(f'Invalid input Exception occured:  {ex} ')
+        except exceptionhandling.InvalidKey as ex:
+            print(f'Invalid key Exception occured:  {ex} ')
+        except Exception as ex:
+            print(f'Exception occured:  {ex} ')

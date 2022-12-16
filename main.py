@@ -1,5 +1,5 @@
 from others import config
-from datetime import datetime
+from datetime import datetime, date
 import re
 
 
@@ -15,8 +15,10 @@ def print_hi(name):
     # print(config.first_variable)
     # print(config.second_variable)
     # print(dir(dict))
-    current_date = datetime.utcnow().strftime('%Y-%m-%d')
-    print(current_date)
+    today: date = date.today()
+    print(today)
+    # current_date = datetime.utcnow().strftime('%Y-%m-%d')
+    # print(current_date)
     # line = '$ cd /'
     # cmd = re.search(r'\$ (cd|ls) (.+)', line)
     # if cmd:
