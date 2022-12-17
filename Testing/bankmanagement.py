@@ -1,37 +1,37 @@
+import csv
 import re
 from exception import exceptionhandling
-from collections import defaultdict
+from collections import OrderedDict
 from datetime import datetime, date
 import os
+from bankapplicationlogger import logger
 
-# account_records = defaultdict(Account)
-#
-# account_records = {}
+account_records = {}
 
 
-# def generate_account_id():
-#     """ It returns a generated id for each account whenever required"""
-#     is_continue = True
-#     count = 0
-#     while is_continue:
-#         account_id = 'i2i' + str(count)
-#         yield account_id
-#         count += 1
-#
-#
-# ids = generate_account_id()
 file_path = os.getcwd()
 
 
 class Account:
     """ This class contains the attributes of the account object"""
 
-    def __init__(self, account_creation_date=datetime.utcnow().strftime("%d/%m/%Y")):
+    def __init__(self, account_creation_date=datetime.utcnow().strftime("%d/%m/%Y"),
+                 account_updated_date=datetime.utcnow().strftime("%d/%m/%Y")):
+        self.account_id = None
+        self.name = None
+        self.contact_number = None
         self.age = None
         self.account_balance = None
         self.creation_date = account_creation_date
-        self.contact_number = None
-        self.name = None
+        self.updated_date = account_updated_date
+
+    def set_account_id(self, account_id):
+        """ This method sets the account id """
+        self.account_id = account_id
+
+    def get_account_id(self):
+        """ This method returns the account id"""
+        return self.account_id
 
     def set_name(self, name):
         """ Setter method for name attribute"""
@@ -75,10 +75,20 @@ class Account:
         """ Return the age attribute """
         return self.age
 
+    def created_on(self, date_of_creation):
+        self.creation_date = date_of_creation
 
-account_records = defaultdict(Account)
+    def get_created_date(self):
+        return self.creation_date
 
-account_records = {}
+    def updated_on(self, updated_date):
+        self.updated_date = updated_date
+
+    def get_updated_date(self):
+        return self.updated_date
+
+
+# account_records = {'i2i0': {'account_id': 'i2i0', 'name': 'Dhanesh', 'contact_number': '8489335530', 'age': 22, 'account_balance': 12345.0, 'creation_date': '17/12/2022', 'updated_date': '17/12/2022'}}
 
 
 def generate_account_id():
@@ -96,6 +106,8 @@ ids = generate_account_id()
 
 def create_account():
     new_account = Account()
+    account_id = next(ids)
+
     get_name = True
     while get_name:
         name = input('Enter your name: ')
@@ -120,13 +132,26 @@ def create_account():
 
     amount = float(input('Enter the depositing amount: '))
     new_account.deposit_amount(amount)
+    new_account.set_account_id(account_id=account_id)
 
-    account_id = next(ids)
     account_records[account_id] = new_account
 
-    # with open(file_path + '\employee_records.csv', 'r+') as employee_records:
-
     return f'Account successfully created'
+
+
+def create_account_records():
+    try:
+        with open(file_path + '\\bank_account_records.csv', 'w+') as accounts:
+            file_headers = ('account_id', 'name', 'contact_number', 'age', 'account_balance', 'creation_date','updated_date', '')
+            file_writer = csv.DictWriter(accounts, fieldnames=file_headers)
+            file_writer.writeheader()
+
+            record_file = [file_writer.writerow(j.__dict__)for i, j in account_records.items()]
+            return record_file
+
+    except FileNotFoundError as ex:
+        logger.warning("File doesn't exist")
+        print(f'Exception occured : {ex}')
 
 
 def get_account_number():
@@ -152,7 +177,7 @@ def withdraw_amount():
         amount = float(input('Enter the amount you want to withdraw: '))
         available_balance = account.get_account_balance()
         if available_balance < amount:
-            return f'Insufficient balance, the available balance is {amount}'
+            return f'Insufficient balance, the available balance is {available_balance}'
         else:
             balance = available_balance - amount
             account.deposit_amount(balance)
@@ -163,29 +188,41 @@ def withdraw_amount():
 def get_account_details(account_id):
     if account_id in account_records.keys():
         result = account_records[account_id]
-        return result
+        return result.__dict__
     else:
-        return 'No Account found for this id'
+        return f'No Account found for this id {account_id}'
 
+
+# def deposit_amount():
+#     account_id = get_account_number()
+#     account = get_account_details(account_id=account_id)
+#     if account is not None:
+#         amount = float(input('Enter the amount your want to deposit: '))
+#         account.deposit_amount(amount=account.get_account_balance() + amount)
+#         account_records[account_id] = account
+#         return f'rupees {amount} is successfully deposited into the account {account.name}'
+#     else:
+#         raise exceptionhandling.AccountNotFoundException(f'No account found for the {account_id}')
 
 def deposit_amount():
     account_id = get_account_number()
     account = get_account_details(account_id=account_id)
-    if account is not None:
+    try:
         amount = float(input('Enter the amount your want to deposit: '))
         account.deposit_amount(amount=account.get_account_balance() + amount)
         account_records[account_id] = account
         return f'rupees {amount} is successfully deposited into the account {account.name}'
-    else:
-        raise exceptionhandling.AccountNotFoundException(f'No account found for the {account_id}')
-    ...
+    except KeyError as ex:
+        logger.warning(f'Exception occured: {ex}')
+        return f'No account found for this id: {account_id}'
 
 
 def _init_():
-    is_continue = True
-    while is_continue:
+    get_input = True
+    while get_input:
         print('Enter 1 to create new account\nEnter 2 to view accounts\nEnter 3 to get account details\nEnter 4 to '
-              'deposit amount into your account\nEnter 5 to withdraw amount from your account')
+              'deposit amount into your account\nEnter 5 to withdraw amount from your account\nEnter 6 to convert '
+              'local records to file\nEnter 7 to exit')
 
         user_choice = int(input('Enter your choice: '))
         # if not str(user_choice).isnumeric():
@@ -195,15 +232,20 @@ def _init_():
         match user_choice:
             case 1:
                 print(create_account())
+                logger.info('Account created')
             case 2:
                 print([{i: j.__dict__} for i, j in account_records.items()])
             case 3:
                 result = get_account_details(get_account_number())
-                print(result.__dict__)
+                print(result)
             case 4:
                 print(deposit_amount())
             case 5:
                 print(withdraw_amount())
+            case 6:
+                create_account_records()
+            case 7:
+                get_input = False
             case _:
                 print('Invalid input')
 
@@ -215,10 +257,14 @@ if __name__ == '__main__':
             _init_()
             is_continue = False
         except ValueError as ex:
+            logger.warning(f'Invalid value Exception occured:  {ex} ')
             print(f'Invalid value Exception occured:  {ex} ')
         except exceptionhandling.InvalidInput as ex:
+            logger.warning(f'Invalid input Exception occured:  {ex} ')
             print(f'Invalid input Exception occured:  {ex} ')
         except exceptionhandling.InvalidKey as ex:
+            logger.warning(f'Invalid key Exception occured:  {ex} ')
             print(f'Invalid key Exception occured:  {ex} ')
         except Exception as ex:
+            logger.warning(f'Exception occured:  {ex} ')
             print(f'Exception occured:  {ex} ')

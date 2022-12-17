@@ -15,8 +15,10 @@ def print_hi(name):
     # print(config.first_variable)
     # print(config.second_variable)
     # print(dir(dict))
-    today: date = date.today()
-    print(today)
+    # today: date = date.today()
+    # print(today)
+    for i in range(22, 23, 24):
+        print(i)
     # current_date = datetime.utcnow().strftime('%Y-%m-%d')
     # print(current_date)
     # line = '$ cd /'
@@ -25,7 +27,6 @@ def print_hi(name):
     #     print('ok')
     # else:
     #     print('No')
-
 
 
 # Press the green button in the gutter to run the script.
