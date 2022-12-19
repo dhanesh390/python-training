@@ -14,4 +14,5 @@ stream_log_handler.setFormatter(stream_log_format)
 file_log_handler.setFormatter(file_log_format)
 
 logger.addHandler(stream_log_handler)
+
 logger.addHandler(file_log_handler)
