@@ -91,6 +91,9 @@ class Account:
         """ This method returns the creation date of the account"""
         return self.__creation_date
 
+    def updated_on(self, updated_time):
+        self.__updated_date = updated_time
+
     def get_updated_date(self):
         """ This method returns the date of account updation"""
         return self.__updated_date
@@ -134,7 +137,6 @@ def get_valid_amount():
         get_valid_amount()
     else:
         valid_amount = amount
-
     return valid_amount
 
 
@@ -174,10 +176,10 @@ def create_account_records():
             file_writer = csv.DictWriter(accounts, fieldnames=file_headers)
             file_writer.writeheader()
 
-            for key, value in account_records.items():
-                file_writer.writerow(value.__dict__)
+            # for key, value in account_records.items():
+            #     file_writer.writerow(value.__dict__)
             # record_file = [file_writer.writerow(j.__dict__) for i, j in account_records.items()]
-            return 'Account records successfully created'
+            return f'Account records successfully created {[file_writer.writerow(j.__dict__) for i, j in account_records.items()]}'
 
     except FileNotFoundError as file_not_found_error:
         logger.warning("File doesn't exist")
@@ -213,12 +215,13 @@ def withdraw_amount():
         account = account_records[account_id]
         amount = float(input('Enter the amount you want to withdraw: '))
         available_balance = account.get_account_balance()
+        print('2: ', available_balance)
         if available_balance < amount:
             logger.error(f'Insufficient balance, the available balance is {available_balance}')
             return f'Insufficient balance, the available balance is {available_balance}'
         else:
             balance = available_balance - amount
-            account.updated_on(updated_date=datetime.utcnow().strftime(myconstants.DATE_TIME_FORMAT))
+            account.updated_on(updated_time=datetime.utcnow().strftime(myconstants.DATE_TIME_FORMAT))
             account.deposit_amount(balance)
     logger.info('leaving the cash withdraw module')
     return account.__dict__
@@ -237,7 +240,7 @@ def get_account_details_by_account_id(account_id):
 def get_account_details_by_contact_number(contact_number):
     """ This method returns the account records using the account holders contact number"""
     for i, j in account_records.items():
-        if contact_number == j.contact_number:
+        if contact_number == j.get_contact_number():
             return j.__dict__
         else:
             logger.warning(f'Account records not found for this {contact_number} contact number')

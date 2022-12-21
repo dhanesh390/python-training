@@ -1,7 +1,8 @@
 from exception import exceptionhandling
 from datetime import datetime, date
-from bankapplicationlogger import logger
+from sampleproject import logger
 from constants import myconstants
+
 
 class Account:
     """ This class contains the attributes of the account object"""
@@ -54,7 +55,7 @@ class Account:
         if 0 < amount < 1000000:
             self.__account_balance = amount
         else:
-            logger.warning('Depositing amount should be less than 100000')
+            logger.error('Depositing amount should be less than 100000')
             raise exceptionhandling.InvalidInput('Depositing amount should be less than 100000')
 
     def get_account_balance(self):
@@ -65,7 +66,7 @@ class Account:
         """ gets the date of birth and set the age attribute by converting date of birth into age"""
         today: date = date.today()
         if date_of_birth.year > today.year:
-            logger.warning('Error occured in date of birth input')
+            logger.error('Error occured in date of birth input')
             raise exceptionhandling.InvalidInput('Enter a valid date of birth')
         else:
             difference_in_year: int = today.year - date_of_birth.year

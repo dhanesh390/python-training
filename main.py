@@ -17,8 +17,21 @@ def print_hi(name):
     # print(dir(dict))
     # today: date = date.today()
     # print(today)
-    for i in range(22, 23, 24):
-        print(i)
+    # for i in range(22, 23, 24):
+    #     print(i)
+    # sample_string = UpperPrintString("Hello, Pythonista!")
+
+    # print(sample_string)
+
+    def longest_words(filename):
+        with open(filename, 'r') as infile:
+            words = infile.read().split()
+        max_len = len(max(words, key=len))
+        return [word for word in words if len(word) == max_len]
+
+    print(longest_words('C:/Users/lenovo/Documents/Day1.txt'))
+
+    # sample_string
     # current_date = datetime.utcnow().strftime('%Y-%m-%d')
     # print(current_date)
     # line = '$ cd /'

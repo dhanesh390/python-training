@@ -22,14 +22,17 @@ from collections import UserList
 # sample_list['Deepak'] = 'Developer'
 # print('\n4: ', sample_list)
 #
-# # Ordered dict ->
-#
-# sample_list = OrderedDict()
-# sample_list['Dhanesh'] = 'Developer'
-# sample_list['Deepak'] = 'Tester'
-# sample_list['Gowtham'] = 'Developer'
-#
-# print('\n1.1: ', sample_list)
+# Ordered dict ->
+
+sample_list = OrderedDict()
+sample_list['Dhanesh'] = 'Developer'
+sample_list['Deepak'] = 'Tester'
+sample_list['Gowtham'] = 'Developer'
+
+print('\n1.1: ', sample_list)
+
+second_list = OrderedDict({'dhanesh': 'developer', 'deepak': 'Tester'})
+print('1.2: ', second_list)
 #
 # sample_list.move_to_end('Deepak')
 # print('\n1.2: ', sample_list)
