@@ -13,7 +13,7 @@ def _square(numbers, thread_no):
         print(f'current thread name: {current_thread().name} current thread id: {get_native_id()} ')
         if thread_no == 1:
             a = numbers_list[i]
-            b = a*a
+            b = a * a
             numbers_list[i] = b
             print(f'\nthread {thread_no} value: {a} :  {b}')
         elif thread_no == 2:
@@ -28,12 +28,32 @@ def _square(numbers, thread_no):
     print('2: ', new_list)
 
 
-first_thread = Thread(target=_square, args=(5, 1))
+first_thread = Thread(target=_square, name='threadone', args=(5, 1))
 
-second_thread = Thread(target=_square, args=(5, 2))
-
+second_thread = Thread(target=_square, name='threadtwo', args=(5, 2))
 
 first_thread.start()
 second_thread.start()
 first_thread.join()
 second_thread.join()
+
+# sample_list = [1, 2, 3, 4]
+#
+#
+# def _cube(numbers):
+#     for number in numbers:
+#         print(f'\nCurrent thread: {current_thread().name}, thread_id: {get_native_id()}')
+#         print(f'\n{number} cube: {number * number * number}')
+#         time.sleep(0.1)
+#
+#
+# t1_thread = Thread(target=_cube, args=(sample_list,))
+# t2_thread = Thread(target=_cube, args=(sample_list,))
+#
+# t1_thread.start()
+# t2_thread.start()
+#
+# t1_thread.join()
+# t2_thread.join()
+
+
